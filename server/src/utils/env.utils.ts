@@ -3,7 +3,8 @@ import { cleanEnv, port, str, num } from 'envalid'
 const env = {
   PORT: port(),
   NODE_ENV: str(),
-  DATABASE_URL: str(),
+  DATABASE_URL_DEV: str(),
+  DATABASE_URL_PROD: str(),
   SESSION_SECRET: str(),
   SALT_WORK_FACTOR: num()
 }
