@@ -20,7 +20,9 @@ const query = {
     genre: z.string().optional(),
     artist: z.string().optional(),
     album: z.string().optional(),
-    title: z.string().optional()
+    title: z.string().optional(),
+    page: z.string().optional(),
+    limit: z.string().optional()
   })
 }
 

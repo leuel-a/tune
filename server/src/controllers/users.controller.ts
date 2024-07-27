@@ -12,6 +12,11 @@ export const createUserHandler = async (
   res: Response
 ) => {
   const { email, password } = req.body
+
+  const alreadyExistsUser = await findUser({ email }, { lean: true })
+  if (alreadyExistsUser)
+    return res.status(400).send('Email is taken.')
+
   try {
     const user = await createUser({ email, password })
 

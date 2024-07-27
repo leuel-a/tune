@@ -1,28 +1,21 @@
-import { kMaxLength } from 'buffer'
 import {
   CreateMusicType,
   DeleteMusicType,
   ReadManyMusicType,
   ReadMusicType
-} from '../schemas/music.schema'
-import {
-  createMusic,
-  findAndUpdate,
-  findMusic,
-  deleteMusic,
-  findManyMusic
-} from '../services/music.services'
+} from '../schemas/musics.schema'
+import { createMusic, findMusic, deleteMusic, findManyMusic } from '../services/music.services'
 import { Request, Response } from 'express'
+import { FilterQuery, QueryOptions } from 'mongoose'
 import { MusicDocument } from 'models/music.model'
-import { FilterQuery } from 'mongoose'
+import { isNaN } from 'lodash'
 
 export const createMusicHandler = async (
   req: Request<{}, {}, CreateMusicType['body']>,
   res: Response
 ) => {
   try {
-    const { title, artist, genre, album } = req.body
-    const music = await createMusic({ title, artist, genre, album })
+    const music = await createMusic(req.body)
 
     res.location(`/api/musics/${music._id}`)
     return res.status(201).json(music)
@@ -31,10 +24,7 @@ export const createMusicHandler = async (
   }
 }
 
-export const getMusicHandler = async (
-  req: Request<ReadMusicType['params']>,
-  res: Response
-) => {
+export const getMusicHandler = async (req: Request<ReadMusicType['params']>, res: Response) => {
   const music = await findMusic({ _id: req.params.id }, { lean: true })
 
   if (!music) {
@@ -68,18 +58,24 @@ export const getMusicsHandler = async (
   req: Request<{}, {}, {}, ReadManyMusicType['query']>,
   res: Response
 ) => {
-  const { title, artist, album, genre } = req.query
-  const musics = await findManyMusic({}, { lean: true })
+  const { title, artist, album, genre, page, limit } = req.query
 
-  // filter query for my endpoint
-  // const musics = await findManyMusic(
-  //   {
-  //     title: new RegExp(title, 'i'),
-  //     album: new RegExp(album, 'i'),
-  //     genre: new RegExp(genre, 'i'),
-  //     artist: new RegExp(artist, 'i')
-  //   },
-  //   { lean: true }
-  // )
-  return res.status(200).send(musics)
+  const query: FilterQuery<MusicDocument> = {
+    ...(title && { title: { $regex: new RegExp(title, 'i') } }),
+    ...(artist && { artist: { $regex: new RegExp(artist, 'i') } }),
+    ...(album && { album: { $regex: new RegExp(album, 'i') } }),
+    ...(genre && { genre: { $regex: new RegExp(genre, 'i') } })
+  }
+
+  const parsedPage = page ? (isNaN(parseInt(page)) ? 1 : parseInt(page)) : 1
+  const parsedLimit = limit ? (isNaN(parseInt(limit)) ? 10 : parseInt(limit)) : 10
+
+  const options: QueryOptions = {
+    skip: (parsedPage - 1) * parsedLimit,
+    lean: true,
+    limit: parsedLimit
+  }
+
+  const musics = await findManyMusic(query, options)
+  return res.status(200).json({ page: parsedPage, data: musics })
 }

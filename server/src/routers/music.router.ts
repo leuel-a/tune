@@ -3,13 +3,13 @@ import {
   deleteMusicHandler,
   getMusicHandler,
   getMusicsHandler
-} from '../controllers/music.controller'
+} from '../controllers/musics.controller'
 import {
   createMusicSchema,
   deleteMusicSchema,
   getManyMusicSchema,
   getMusicSchema
-} from '../schemas/music.schema'
+} from '../schemas/musics.schema'
 import { Router } from 'express'
 import { validate } from '../middlewares/validateResource'
 

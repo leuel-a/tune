@@ -8,15 +8,8 @@ export const connect = async () => {
     // if you are in development mode, use the development database
     // if you are in production mode, use the production
 
-    let dbUrl
-
-    if (env.NODE_ENV === 'development') {
-      dbUrl = env.DATABASE_URL_DEV
-    } else {
-      dbUrl = env.DATABASE_URL_PROD
-    }
-
-    await mongoose.connect(dbUrl)
+    // connect to the database
+    await mongoose.connect(env.DATABASE_URL_LOCAL)
 
     logger.info(`Connection to the database is successful`)
   } catch (e) {
