@@ -9,13 +9,15 @@ import { Request, Response } from 'express'
 import { FilterQuery, QueryOptions } from 'mongoose'
 import { MusicDocument } from 'models/music.model'
 import { isNaN } from 'lodash'
+import { UserDocument } from 'models/users.model'
 
 export const createMusicHandler = async (
   req: Request<{}, {}, CreateMusicType['body']>,
   res: Response
 ) => {
   try {
-    const music = await createMusic(req.body)
+    const user = req.user as UserDocument
+    const music = await createMusic({ ...req.body, userId: user._id as string })
 
     res.location(`/api/musics/${music._id}`)
     return res.status(201).json(music)
@@ -77,5 +79,5 @@ export const getMusicsHandler = async (
   }
 
   const musics = await findManyMusic(query, options)
-  return res.status(200).json({ page: parsedPage, data: musics })
+  return res.status(200).json({ limit: parsedLimit, page: parsedPage, data: musics })
 }

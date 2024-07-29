@@ -5,6 +5,7 @@ export interface MusicInput {
   artist: string
   album: string
   genre: string
+  userId?: string // maybe make this mongoose.type.ObjectId
 }
 
 export interface MusicDocument extends mongoose.Document, MusicInput {
@@ -29,6 +30,10 @@ const musicSchema = new mongoose.Schema(
     genre: {
       type: String,
       require: true
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     }
   },
   { timestamps: true }

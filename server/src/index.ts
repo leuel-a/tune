@@ -7,10 +7,14 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import express, { Express } from 'express'
 import { validateEnv } from './utils/env.utils'
+import { initializePassport } from './utils/passport.utils'
 import { userRouter, authRouter, musicRouter } from './routers'
-import { initializePassport } from './config/passport.config'
+import { refreshAccessToken } from './middlewares/refreshAccessToken'
 
-// Setup strategies and serializers
+// strategies
+import './strategies/JwtStrategy'
+import './strategies/LocalStrategy'
+
 initializePassport(passport)
 
 dotenv.config()
@@ -38,6 +42,9 @@ export async function configureApp(app: Express) {
 
   app.use(passport.initialize())
   app.use(passport.session())
+
+  // middleware to refresh the access token
+  app.use(refreshAccessToken)
 
   app.use('/api/auth', authRouter)
   app.use('/api/users', userRouter)

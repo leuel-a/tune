@@ -6,7 +6,10 @@ const env = {
   DATABASE_URL_ATLAS: str(),
   DATABASE_URL_LOCAL: str(),
   SESSION_SECRET: str(),
-  SALT_WORK_FACTOR: num()
+  SALT_WORK_FACTOR: num(),
+  JWT_SECRET: str(),
+  ACCESS_TOKEN_TTL: str(),
+  REFRESH_TOKEN_TTL: str()
 }
 
 // this function is used to validate the enviroment variables
