@@ -2,9 +2,16 @@ import {
   CreateMusicType,
   DeleteMusicType,
   ReadManyMusicType,
-  ReadMusicType
-} from '../schemas/musics.schema'
-import { createMusic, findMusic, deleteMusic, findManyMusic } from '../services/music.services'
+  ReadMusicType,
+  UpdateMusicType
+} from '../schemas/music.schema'
+import {
+  createMusic,
+  findMusic,
+  deleteMusic,
+  findManyMusic,
+  findAndUpdate
+} from '../services/music.services'
 import { Request, Response } from 'express'
 import { FilterQuery, QueryOptions } from 'mongoose'
 import { MusicDocument } from 'models/music.model'
@@ -22,7 +29,35 @@ export const createMusicHandler = async (
     res.location(`/api/musics/${music._id}`)
     return res.status(201).json(music)
   } catch (error) {
-    return res.status(400).send(error)
+    return res.status(500).send(error)
+  }
+}
+
+export const updateMusicHandler = async (
+  req: Request<UpdateMusicType['params'], {}, UpdateMusicType['body']>,
+  res: Response
+) => {
+  const musicId = req.params.id
+  const user = req.user as UserDocument
+
+  const music = await findMusic({ _id: musicId })
+  if (!music) {
+    return res.status(404).send('Music not found.')
+  }
+
+  if (music.userId && music.userId.toString() !== user._id.toString()) {
+    return res.status(401).send('Unauthorized')
+  }
+
+  try {
+    const updated = await findAndUpdate(
+      { _id: music._id },
+      { ...music, ...req.body },
+      { new: true }
+    )
+    return res.status(200).json(updated)
+  } catch (error) {
+    return res.status(500).json(error.message)
   }
 }
 
@@ -41,10 +76,16 @@ export const deleteMusicHandler = async (
   res: Response
 ) => {
   const { id } = req.params
+  const user = req.user as UserDocument
   const music = await findMusic({ _id: id })
 
   if (!music) {
     return res.status(404).send('Music not found.')
+  }
+
+  const musicOwner = music?.userId
+  if (musicOwner && musicOwner.toString() !== user._id.toString()) {
+    return res.status(400).json({ message: 'Cannot delete music' })
   }
 
   const result = await deleteMusic({ _id: id })
@@ -79,5 +120,6 @@ export const getMusicsHandler = async (
   }
 
   const musics = await findManyMusic(query, options)
+  // TODO: add the total amount of music in the response of the paginated data
   return res.status(200).json({ limit: parsedLimit, page: parsedPage, data: musics })
 }

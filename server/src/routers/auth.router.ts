@@ -6,8 +6,6 @@ import { loginHandler } from '../controllers/auth.controller'
 
 const router = Router()
 
-router.post('/', validate(loginSchema), passport.authenticate('local'), loginHandler)
-
 router.post('/login', validate(loginSchema), loginHandler)
 
 // TODO: Remove this route when you are

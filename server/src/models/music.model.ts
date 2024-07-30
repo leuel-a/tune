@@ -33,7 +33,8 @@ const musicSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      require: false
     }
   },
   { timestamps: true }

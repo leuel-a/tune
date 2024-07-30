@@ -5,6 +5,7 @@ import passport from 'passport'
 import env from './utils/env.utils'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import cookieParser from 'cookie-parser'
 import express, { Express } from 'express'
 import { validateEnv } from './utils/env.utils'
 import { initializePassport } from './utils/passport.utils'
@@ -40,6 +41,7 @@ export async function configureApp(app: Express) {
     })
   )
 
+  app.use(cookieParser())
   app.use(passport.initialize())
   app.use(passport.session())
 
