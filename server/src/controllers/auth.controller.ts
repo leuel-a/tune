@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import env from '../utils/env.utils'
 import { Request, Response } from 'express'
 import { signJwt } from '../utils/jwt.utils'
@@ -19,8 +20,13 @@ export const loginHandler = async (req: Request<{}, {}, LoginType['body']>, res:
   const accessToken = await signJwt({ userId: String(user._id) }, { expiresIn: accessTokenTtl })
   const refreshToken = await signJwt({ userId: String(user._id) }, { expiresIn: refreshTokenTtl })
 
-  res.cookie('xrefresh', refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true })
-  return res.status(200).json({ accessToken })
+  // res.cookie('x-refresh', refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true })
+  return res.status(200).json({ accessToken, refreshToken })
+}
+
+export const getProfileHandler = (req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'application/json')
+  return res.status(200).json(_.omit(req.user, ['password', '__v']))
 }
 
 // Perform client side revokation instead of server side for the time being

@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import env from '../utils/env.utils'
+import { logger } from '../utils/logger.utils'
 import { findUser } from '../services/users.services'
 import { signJwt, verifyJwt } from '../utils/jwt.utils'
 import { NextFunction, Request, Response } from 'express'
@@ -9,7 +10,10 @@ const accessTokenTtl = env.ACCESS_TOKEN_TTL
 
 export const refreshAccessToken = async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = _.get(req, 'headers.authorization', '').replace(/^Bearer\s/, '')
-  const refreshToken = _.get(req, 'cookies.xrefresh')
+  const refreshToken = _.get(req, 'headers.x-refresh')
+
+  logger.info(accessToken)
+  logger.info(refreshToken)
 
   if (!accessToken) {
     return next()
@@ -25,8 +29,8 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
     return next()
   }
 
-  const { decoded: refreshDecoded } = verifyJwt(refreshToken)
-  if (!refreshToken) {
+  const { decoded: refreshDecoded } = verifyJwt(refreshToken as string)
+  if (!refreshDecoded) {
     return next()
   }
 
