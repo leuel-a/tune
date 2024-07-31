@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects'
-import musicsSaga from '../features/music/musicSagas'
+import authSaga from '../features/auth/authSaga'
+import musicsSaga from '../features/music/musicSaga'
 
 export default function* rootSaga() {
-  yield all([musicsSaga()])
+  yield all([musicsSaga(), authSaga()])
 }

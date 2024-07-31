@@ -8,6 +8,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LoginPage from './pages/LoginPage.tsx'
 import SignupPage from './pages/SignupPage.tsx'
 import HomePage from './pages/HomePage.tsx'
+import ProfilePage from './pages/ProfilePage.tsx'
+import ProfileCreateMusic from './components/profile/CreateMusic.tsx'
+import ProfileMusics from './components/profile/Musics.tsx'
+import ProfilePersonalStats from './components/profile/PersonalStats.tsx'
 
 export const theme = {
   colors: {
@@ -33,7 +37,16 @@ const router = createBrowserRouter([
     children: [
       { path: '', element: <HomePage /> },
       { path: '/login', element: <LoginPage /> },
-      { path: '/signup', element: <SignupPage /> }
+      { path: '/signup', element: <SignupPage /> },
+      {
+        path: '/profile',
+        element: <ProfilePage />,
+        children: [
+          { path: '', element: <ProfileMusics /> },
+          { path: 'create', element: <ProfileCreateMusic /> },
+          { path: 'stats', element: <ProfilePersonalStats /> }
+        ]
+      }
     ]
   }
 ])

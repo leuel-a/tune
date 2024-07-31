@@ -43,3 +43,12 @@ export const FormMessage = styled.p`
   color: red;
   margin-block: 10px;
 `
+
+export const FormLabel = styled.label`
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: block;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  color: ${({ theme }) => theme.colors.secondary};
+`

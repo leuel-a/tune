@@ -20,7 +20,6 @@ export default function HomePage() {
     return <div>Loading</div>
   }
 
-  console.log(musics)
   return (
     <>
       <Header />
