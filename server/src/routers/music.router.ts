@@ -5,6 +5,7 @@ import {
   deleteMusicHandler,
   getMusicHandler,
   getMusicsHandler,
+  getUsersMusics,
   updateMusicHandler
 } from '../controllers/music.controller'
 import {
@@ -42,6 +43,13 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   validate(deleteMusicSchema),
   deleteMusicHandler
+)
+
+router.get(
+  '/users/me',
+  passport.authenticate('jwt', { session: false }),
+  validate(getManyMusicSchema),
+  getUsersMusics
 )
 
 export default router

@@ -1,3 +1,4 @@
+import { isNaN } from 'lodash'
 import {
   CreateMusicType,
   DeleteMusicType,
@@ -10,13 +11,13 @@ import {
   findMusic,
   deleteMusic,
   findManyMusic,
-  findAndUpdate
+  findAndUpdate,
+  countMusics
 } from '../services/music.services'
 import { Request, Response } from 'express'
 import { FilterQuery, QueryOptions } from 'mongoose'
-import { MusicDocument } from 'models/music.model'
-import { isNaN } from 'lodash'
-import { UserDocument } from 'models/users.model'
+import { MusicDocument } from '../models/music.model'
+import { UserDocument } from '../models/users.model'
 
 export const createMusicHandler = async (
   req: Request<{}, {}, CreateMusicType['body']>,
@@ -45,7 +46,7 @@ export const updateMusicHandler = async (
     return res.status(404).send('Music not found.')
   }
 
-  if (music.userId && music.userId.toString() !== user._id.toString()) {
+  if (music.userId && String(music.userId) !== String(user._id)) {
     return res.status(401).send('Unauthorized')
   }
 
@@ -84,7 +85,7 @@ export const deleteMusicHandler = async (
   }
 
   const musicOwner = music?.userId
-  if (musicOwner && musicOwner.toString() !== user._id.toString()) {
+  if (musicOwner && String(musicOwner) !== String(user._id)) {
     return res.status(400).json({ message: 'Cannot delete music' })
   }
 
@@ -119,7 +120,32 @@ export const getMusicsHandler = async (
     limit: parsedLimit
   }
 
-  const musics = await findManyMusic(query, options)
-  // TODO: add the total amount of music in the response of the paginated data
-  return res.status(200).json({ limit: parsedLimit, page: parsedPage, data: musics })
+  try {
+    const [musics, total] = await Promise.all([findManyMusic(query, options), countMusics(query)])
+    return res.status(200).json({ limit: parsedLimit, page: parsedPage, total, data: musics })
+  } catch (error) {
+    return res.status(500).json({ message: String(error) })
+  }
+}
+
+export const getUsersMusics = async (
+  req: Request<{}, {}, {}, ReadManyMusicType['query']>,
+  res: Response
+) => {
+  const user = req.user as UserDocument
+  const { page, limit } = req.query
+
+  const parsedPage = page ? (isNaN(parseInt(page)) ? 1 : parseInt(page)) : 1
+  const parsedLimit = limit ? (isNaN(parseInt(limit)) ? 10 : parseInt(limit)) : 10
+
+  try {
+    const musics = await findManyMusic(
+      { userId: user._id },
+      { lean: true, limit: parsedLimit, skip: (parsedPage - 1) * parsedLimit }
+    )
+    return res.status(200).json(musics)
+  } catch (error) {
+    // TODO: may be just making the error a String wont be enough
+    return res.status(500).json({ message: String(error) })
+  }
 }

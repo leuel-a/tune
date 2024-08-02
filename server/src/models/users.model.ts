@@ -43,9 +43,7 @@ const userSchema = new mongoose.Schema(
 })
 
 // TODO: is it better to do it or bind it to the schema?
-userSchema.methods.comparePassword = async function (
-  candidatePassword: string
-): Promise<boolean> {
+userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   const user = this as UserDocument
   return await bcrypt.compare(candidatePassword, user.password)
 }

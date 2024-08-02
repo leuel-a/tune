@@ -35,3 +35,7 @@ export const findManyMusic = async (
 ) => {
   return await MusicModel.find(query, {}, options)
 }
+
+export const countMusics = async (query: FilterQuery<MusicDocument>) => {
+  return await MusicModel.countDocuments(query)
+}
