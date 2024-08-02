@@ -5,7 +5,6 @@ export const SideBarContainer = styled.div`
   flex: 1;
   gap: 15px;
   display: flex;
-  padding-top: 10px;
   padding-inline: 10px;
   flex-direction: column;
   align-items: start;

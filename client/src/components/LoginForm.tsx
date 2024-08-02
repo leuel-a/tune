@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { LoginType, loginSchema } from '../schemas/authSchemas'
 import { StyledLoadingSpinner } from './styles/LoadingSpinner.styled'
 import { FormControl, FormItem, FormMessage, StyledForm, StyledInput } from './styles/Form.styled'
-import { loginUserRequest } from '../features/auth/authSlice'
+import { loginUserRequest } from '../redux/auth/authSlice'
 import { useEffect } from 'react'
 
 export default function LoginForm() {

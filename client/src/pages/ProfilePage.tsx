@@ -28,7 +28,7 @@ export default function ProfilePage() {
       <Header />
       <ProfilePageContainer>
         <Container>
-          <Flex>
+          <Flex align='flex-start'>
             <ProfileSideBar />
             <OutletContainer>
               <Outlet />

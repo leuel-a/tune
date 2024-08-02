@@ -12,6 +12,7 @@ import {
 import { CreateMusicContainer, CreateMusicFormGrid } from '../styles/Profile.CreateMusic.styled'
 import Button from '../Button'
 import { theme } from '../../main'
+import { Select, SelectOption } from '../styles/ui/Select.styled'
 
 export default function ProfileCreateMusic() {
   const {
@@ -57,7 +58,14 @@ export default function ProfileCreateMusic() {
           <FormItem>
             <FormLabel>Genre</FormLabel>
             <FormControl>
-              <StyledInput {...register('genre')} placeholder="Music genre name..." />
+              <Select {...register('genre')}>
+                <SelectOption value="">Please select a genre</SelectOption>
+                <SelectOption value="Classical">Classical</SelectOption>
+                <SelectOption value="Jazz">Jazz</SelectOption>
+                <SelectOption value="Rock">Rock</SelectOption>
+                <SelectOption value="Pop">Pop</SelectOption>
+                <SelectOption value="Hip Hop/Rap">Hip Hop/Rap</SelectOption>
+              </Select>
             </FormControl>
             {errors.genre && <FormMessage>{errors.genre.message}</FormMessage>}
           </FormItem>

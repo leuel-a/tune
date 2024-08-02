@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const CreateMusicContainer = styled.div`
-  padding: 25px 40px;
+  padding: 0px 40px;
 
   h1 {
     color: ${({ theme }) => theme.button.secondary};

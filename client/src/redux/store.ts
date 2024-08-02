@@ -1,15 +1,15 @@
 import rootSaga from './rootSaga'
 import createSagaMiddleware from 'redux-saga'
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from '../features/auth/authSlice'
-import musicReducer from '../features/music/musicSlice'
+import musicsReducer from './musics/musicsSlice'
+import authReducer from './auth/authSlice'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    music: musicReducer
+    musics: musicsReducer
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(sagaMiddleware)
 })

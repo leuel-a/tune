@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useEffect } from 'react'
 
 import { useAppDispatch, useAppSelector } from './hooks'
-import { getAuthenticatedUser } from './features/auth/authSlice'
+import { getAuthenticatedUser } from './redux/auth/authSlice'
 
 export default function App() {
   const dispatch = useAppDispatch()
