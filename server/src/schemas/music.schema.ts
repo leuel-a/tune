@@ -17,10 +17,7 @@ const params = {
 
 const query = {
   query: z.object({
-    genre: z.string().optional(),
-    artist: z.string().optional(),
-    album: z.string().optional(),
-    title: z.string().optional(),
+    search: z.string().optional(),
     page: z.string().optional(),
     limit: z.string().optional()
   })
