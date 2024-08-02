@@ -19,7 +19,8 @@ const query = {
   query: z.object({
     search: z.string().optional(),
     page: z.string().optional(),
-    limit: z.string().optional()
+    limit: z.string().optional(),
+    genres: z.string().optional()
   })
 }
 

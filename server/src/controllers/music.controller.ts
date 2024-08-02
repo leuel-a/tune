@@ -102,21 +102,22 @@ export const getMusicsHandler = async (
   req: Request<{}, {}, {}, ReadManyMusicType['query']>,
   res: Response
 ) => {
-  const { search, page, limit } = req.query
+  const { search, page, limit, genres } = req.query
 
+  const genresList = genres?.split(',')
   const parsedPage = page ? (isNaN(parseInt(page)) ? 1 : parseInt(page)) : 1
   const parsedLimit = limit ? (isNaN(parseInt(limit)) ? 10 : parseInt(limit)) : 10
 
-  const query: FilterQuery<MusicDocument> = search
-    ? {
-        $or: [
-          { title: { $regex: `^${search}`, $options: 'i' } },
-          { artist: { $regex: `^${search}`, $options: 'i' } },
-          { album: { $regex: `^${search}`, $options: 'i' } }
-        ]
-      }
-    : {}
-
+  const query: FilterQuery<MusicDocument> = {
+    ...(search && {
+      $or: [
+        { title: { $regex: search, $options: 'i' } },
+        { artist: { $regex: search, $options: 'i' } },
+        { album: { $regex: search, $options: 'i' } }
+      ]
+    }),
+    ...(genres && { genre: { $in: genresList } })
+  }
   const options: QueryOptions = {
     skip: (parsedPage - 1) * parsedLimit,
     lean: true,
