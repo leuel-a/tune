@@ -8,6 +8,8 @@ export type Music = {
 
 export interface PaginatedResponse<T> {
   page: number
+  limit: number
+  total: number
   data: T[]
 }
 
@@ -16,6 +18,11 @@ export type User = {
   email: string
   createdAt: string
   updatedAt: string
+}
+
+export type PaginateRequest = {
+  page?: number
+  limit?: number
 }
 
 export type LoginResponse = {

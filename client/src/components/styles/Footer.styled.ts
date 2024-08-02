@@ -6,6 +6,8 @@ export const StyledFooter = styled.footer`
   padding: 100px 0 60px;
 
   ul {
+    flex: 1;
+    padding: 0 20px 0 20px;
     list-style-type: none;
   }
 

@@ -1,9 +1,9 @@
-import styled from 'styled-components'
+import styled, { CSSProperties } from 'styled-components'
 
 interface FlexProps {
-  direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
-  align?: 'center' | 'flex-start' | 'flex-end'
-  justify?: 'space-between' | 'center' | 'flex-start' | 'flex-end'
+  direction?: CSSProperties['flexDirection']
+  align?: CSSProperties['alignItems']
+  justify?: CSSProperties['justifyContent']
   margin?: string
   gap?: number
 }

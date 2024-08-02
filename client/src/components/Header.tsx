@@ -1,11 +1,12 @@
 import Button from './Button'
-import { CgProfile } from 'react-icons/cg'
 import { useAppSelector } from '../hooks'
-import { Link, useNavigate } from 'react-router-dom'
+import { CgProfile } from 'react-icons/cg'
 import { Flex } from './styles/ui/Flex.styled'
+import { Profile } from './styles/Profile.styled'
+import { Link, useNavigate } from 'react-router-dom'
+import { Cursor } from './styles/utils/Cursor.styled'
 import { Container } from './styles/ui/Container.styled'
 import { Logo, LogoText, StyledHeader } from './styles/Header.styled'
-import { Profile } from './styles/Profile.styled'
 
 export default function Header() {
   const navigate = useNavigate()
@@ -15,12 +16,12 @@ export default function Header() {
     <StyledHeader>
       <Container>
         <Flex justify="space-between">
-          <Flex justify="space-between">
-            <Flex justify="flex-start" gap={10}>
+          <Cursor $cursor="pointer">
+            <Flex onClick={() => navigate('/')} justify="flex-start" gap={10}>
               <Logo src="./images/logo-2.svg" alt="" />
               <LogoText>Tune</LogoText>
             </Flex>
-          </Flex>
+          </Cursor>
           {authenticated ? (
             <Profile>
               <Flex justify="flex-end" gap={12}>

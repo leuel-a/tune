@@ -6,10 +6,13 @@ const BASE_URL = 'http://localhost:5000'
 
 /**
  * Gets musics from the API
+ * @params search params for the request
  * @returns the paginated response from the backend api
  */
-export const getMusics = async () => {
-  const response = await axios.get<PaginatedResponse<Music>>(`${BASE_URL}/api/musics`)
+export const getMusics = async (searchParams?: string) => {
+  const response = await axios.get<PaginatedResponse<Music>>(
+    `${BASE_URL}/api/musics?${searchParams}`
+  )
   return response.data
 }
 
