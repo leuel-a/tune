@@ -1,4 +1,4 @@
-import React from 'react'
+import { useCallback, useEffect } from 'react'
 import Card from '../components/Card'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
@@ -16,6 +16,30 @@ export default function HomePage() {
   const dispatch = useAppDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const { loading, data } = useAppSelector(state => state.musics)
+
+  const filterMusics = useCallback(
+    (values: string[]) => {
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.delete('genres')
+      newSearchParams.append('genres', values.join(','))
+
+      setSearchParams(newSearchParams.toString())
+      // dispatch(fetchMusicsRequest(newSearchParams.toString()))
+    },
+    [searchParams, setSearchParams]
+  )
+
+  const searchMusics = useCallback(
+    (query: string) => {
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      newSearchParams.delete('search')
+      newSearchParams.append('search', query)
+
+      setSearchParams(newSearchParams.toString())
+      dispatch(fetchMusicsRequest(newSearchParams.toString()))
+    },
+    [searchParams, setSearchParams, dispatch]
+  )
 
   const onNext = () => {
     const page = searchParams.get('page') || '1'
@@ -35,20 +59,17 @@ export default function HomePage() {
     dispatch(fetchMusicsRequest(newSearchParams.toString()))
   }
 
-  React.useEffect(() => {
-    const newSearchParams = new URLSearchParams(searchParams.toString())
-    newSearchParams.set('limit', '12')
-
-    setSearchParams(newSearchParams.toString())
-    dispatch(fetchMusicsRequest(newSearchParams.toString()))
-  }, [dispatch, searchParams, setSearchParams])
+  // this useEffect will make a call to the api on the first render, and
+  // all subsequent renders because of the searchParams, and setSearchParams
+  useEffect(() => {
+    dispatch(fetchMusicsRequest(`limit=12`))
+  }, [dispatch])
 
   return (
     <>
       <Header />
       <Container>
-        <MusicFilters />
-        {/* Create some kind of custom component */}
+        <MusicFilters filterMusics={filterMusics} searchMusics={searchMusics} />
         <Grid gap={20} columns={4}>
           {loading &&
             Array.from({ length: 12 }).map((_, index) => <MusicCardSkeleton key={index} />)}

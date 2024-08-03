@@ -1,18 +1,58 @@
-import { GenreList, GenreListItem } from './styles/GenreList.styled'
+import { useState, useEffect, memo } from 'react'
 import { Input } from './styles/Input.styled'
 import { MusicFiltersWrapper } from './styles/MusicFilters.styled'
+import { GenreList, GenreListItem } from './styles/GenreList.styled'
+import { useDebounce } from '../hooks'
 
-export default function MusicFilters() {
+const genres = ['Raggae', 'Jazz', 'Rock', 'Pop', 'Hip Hop/Rap', 'Rap']
+
+interface MusicFiltersProps {
+  filterMusics: (values: string[]) => void
+  searchMusics: (query: string) => void
+}
+
+function MusicFilters({ filterMusics, searchMusics }: MusicFiltersProps) {
+  console.log(`Rendering MusicFilters`)
+  const [search, setSearch] = useState<string>('')
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+  const debouncedSearch = useDebounce(search)
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres(prev =>
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+    )
+  }
+
+  useEffect(() => {
+    searchMusics(debouncedSearch)
+  }, [debouncedSearch, searchMusics])
+
+  useEffect(() => {
+    filterMusics(selectedGenres)
+  }, [filterMusics, selectedGenres])
+
   return (
     <MusicFiltersWrapper>
-      <Input width={400} type="text" placeholder="Search musics, artists, albums..." />
+      <Input
+        value={search}
+        onChange={e => setSearch(e.currentTarget.value)}
+        width={400}
+        type="text"
+        placeholder="Search musics, artists, albums..."
+      />
       <GenreList>
-        <GenreListItem>Classical</GenreListItem>
-        <GenreListItem>Jazz</GenreListItem>
-        <GenreListItem>Rock</GenreListItem>
-        <GenreListItem>Pop</GenreListItem>
-        <GenreListItem>Hip Hop/Rap</GenreListItem>
+        {genres.map((value, idx) => (
+          <GenreListItem
+            $selected={selectedGenres.includes(value)}
+            onClick={() => toggleGenre(value)}
+            key={idx}
+          >
+            {value}
+          </GenreListItem>
+        ))}
       </GenreList>
     </MusicFiltersWrapper>
   )
 }
+
+export default memo(MusicFilters)
