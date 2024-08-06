@@ -10,14 +10,21 @@ export const findMusic = async (
   options: QueryOptions = { lean: true }
 ) => {
   try {
-    const music = await MusicModel.findOne(query, {}, options)
-    return music
+    const result = await MusicModel.findOne(query, {}, options)
+
+    if (!result) {
+      console.log(`No document found with the given query: ${JSON.stringify(query)}`)
+    }
+    return result
   } catch (error) {
-    return null
+    console.error(`Error finding document: ${error}`)
+    throw error
   }
 }
 
-export const deleteMusic = async (query: FilterQuery<MusicDocument>) => {
+export const deleteMusic = async (
+  query: FilterQuery<MusicDocument>
+): Promise<{ deletedCount?: number }> => {
   return await MusicModel.deleteOne(query)
 }
 

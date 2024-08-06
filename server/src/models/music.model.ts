@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 
 export interface MusicInput {
   title: string
@@ -9,6 +9,7 @@ export interface MusicInput {
 }
 
 export interface MusicDocument extends mongoose.Document, MusicInput {
+  _id: ObjectId
   createdAt: Date
   updatedAt: Date
 }

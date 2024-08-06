@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser'
 import express, { Express } from 'express'
 import { validateEnv } from './utils/env.utils'
 import { initializePassport } from './utils/passport.utils'
-import { userRouter, authRouter, musicRouter } from './routers'
+import { userRouter, authRouter, musicRouter, statsRouter } from './routers'
 import { refreshAccessToken } from './middlewares/refreshAccessToken'
 
 // strategies
@@ -51,6 +51,7 @@ export async function configureApp(app: Express) {
   app.use('/api/auth', authRouter)
   app.use('/api/users', userRouter)
   app.use('/api/musics', musicRouter)
+  app.use('/api/stats', statsRouter)
 }
 
 export default app

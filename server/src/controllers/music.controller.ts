@@ -15,9 +15,9 @@ import {
   countMusics
 } from '../services/music.services'
 import { Request, Response } from 'express'
-import { FilterQuery, QueryOptions } from 'mongoose'
-import { MusicDocument } from '../models/music.model'
 import { UserDocument } from '../models/users.model'
+import { MusicDocument } from '../models/music.model'
+import { FilterQuery, isValidObjectId, QueryOptions, Types } from 'mongoose'
 
 export const createMusicHandler = async (
   req: Request<{}, {}, CreateMusicType['body']>,
@@ -47,7 +47,7 @@ export const updateMusicHandler = async (
   }
 
   if (music.userId && String(music.userId) !== String(user._id)) {
-    return res.status(401).send('Unauthorized')
+    return res.sendStatus(403)
   }
 
   try {
@@ -63,13 +63,22 @@ export const updateMusicHandler = async (
 }
 
 export const getMusicHandler = async (req: Request<ReadMusicType['params']>, res: Response) => {
-  const music = await findMusic({ _id: req.params.id }, { lean: true })
+  try {
+    const id = new Types.ObjectId(req.params.id)
+    const isValid = isValidObjectId(id)
 
-  if (!music) {
-    return res.status(404).send('Music not found.')
+    if (!isValid) {
+      return res.status(400).send('Not a valid id')
+    }
+
+    const music = await findMusic({ _id: id }, {})
+    if (!music) {
+      return res.status(404).send('Music not found.')
+    }
+    return res.status(200).send(music)
+  } catch (error) {
+    return res.status(400).send(error.message)
   }
-
-  return res.status(200).send(music)
 }
 
 export const deleteMusicHandler = async (
@@ -81,18 +90,17 @@ export const deleteMusicHandler = async (
   const music = await findMusic({ _id: id })
 
   if (!music) {
-    return res.status(404).send('Music not found.')
+    return res.sendStatus(404)
   }
 
   const musicOwner = music?.userId
   if (musicOwner && String(musicOwner) !== String(user._id)) {
-    return res.status(400).json({ message: 'Cannot delete music' })
+    return res.sendStatus(403)
   }
 
   const result = await deleteMusic({ _id: id })
-
-  if (result.deletedCount > 0) {
-    return res.status(204).send()
+  if (result.deletedCount && result.deletedCount > 0) {
+    return res.sendStatus(204)
   }
 
   return res.status(500).send('Failed to delete music.')
@@ -141,15 +149,19 @@ export const getUsersMusics = async (
 
   const parsedPage = page ? (isNaN(parseInt(page)) ? 1 : parseInt(page)) : 1
   const parsedLimit = limit ? (isNaN(parseInt(limit)) ? 10 : parseInt(limit)) : 10
-
   try {
-    const musics = await findManyMusic(
-      { userId: user._id },
-      { lean: true, limit: parsedLimit, skip: (parsedPage - 1) * parsedLimit }
-    )
-    return res.status(200).json(musics)
+    const query: FilterQuery<MusicDocument> = { userId: user._id }
+    const [musics, total] = await Promise.all([
+      findManyMusic(query, {
+        lean: true,
+        limit: parsedLimit,
+        skip: (parsedPage - 1) * parsedLimit
+      }),
+      countMusics(query)
+    ])
+
+    return res.status(200).json({ limit: parsedLimit, page: parsedPage, total, data: musics })
   } catch (error) {
-    // TODO: may be just making the error a String wont be enough
     return res.status(500).json({ message: String(error) })
   }
 }
