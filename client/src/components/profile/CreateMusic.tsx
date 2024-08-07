@@ -36,7 +36,7 @@ export default function ProfileCreateMusic() {
     try {
       await addMusic(values)
       toast.success('Music added successfully')
-      dispatch(getUsersMusicRequest())
+      dispatch(getUsersMusicRequest(`limit=8`))
       navigate('/profile')
     } catch (error) {
       if (isAxiosError(error)) {
