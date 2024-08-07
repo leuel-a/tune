@@ -86,8 +86,8 @@ export const deleteMusicHandler = async (
   res: Response
 ) => {
   const { id } = req.params
-  if (isValidObjectId(id)) {
-    return res.status(400).send('Id not a valid object id')
+  if (!isValidObjectId(id)) {
+    return res.status(400).send('Id not a valid mongoose.Types.ObjectId')
   }
   
   const user = req.user as UserDocument
