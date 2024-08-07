@@ -7,7 +7,7 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   width: 1250px;
-  min-width: 420px;
+  min-width: 360px;
   height: ${({ height }) => (height ? (height === 'screen' ? '100vh' : '') : '100%')};
   max-width: 100%;
   padding: ${({ padding }) => (padding ? padding : '20px 0')};

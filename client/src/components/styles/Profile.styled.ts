@@ -6,4 +6,10 @@ export const Profile = styled.div`
     font-weight: 500;
     font-size: 1rem;
   }
+
+  @media (max-width: ${({theme}) => theme.mobile.md}) {
+    p {
+      display: none;
+    }
+  }
 `

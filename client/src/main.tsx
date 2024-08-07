@@ -12,6 +12,8 @@ import ProfilePage from './pages/ProfilePage.tsx'
 import ProfileCreateMusic from './components/profile/CreateMusic.tsx'
 import ProfileMusics from './components/profile/Musics.tsx'
 import ProfilePersonalStats from './components/profile/PersonalStats.tsx'
+import StatsPage from './pages/StatsPage.tsx'
+import EditMusicForm from './components/profile/EditMusicForm.tsx'
 
 export const theme = {
   colors: {
@@ -38,13 +40,18 @@ const router = createBrowserRouter([
       { path: '', element: <HomePage /> },
       { path: '/login', element: <LoginPage /> },
       { path: '/signup', element: <SignupPage /> },
+      { path: '/stats', element: <StatsPage /> },
       {
         path: '/profile',
         element: <ProfilePage />,
         children: [
-          { path: '', element: <ProfileMusics /> },
+          {
+            path: '',
+            element: <ProfileMusics />
+          },
           { path: 'create', element: <ProfileCreateMusic /> },
-          { path: 'stats', element: <ProfilePersonalStats /> }
+          { path: 'stats', element: <ProfilePersonalStats /> },
+          { path: 'musics/:id', element: <EditMusicForm /> }
         ]
       }
     ]

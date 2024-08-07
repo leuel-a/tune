@@ -1,6 +1,3 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { createMusicSchema, CreateMusic } from '../../schemas/musicSchema'
 import {
   FormControl,
   FormItem,
@@ -9,49 +6,63 @@ import {
   StyledForm,
   StyledInput
 } from '../styles/Form.styled'
-import { CreateMusicContainer, CreateMusicFormGrid } from '../styles/Profile.CreateMusic.styled'
 import Button from '../Button'
 import { theme } from '../../main'
-import { Select, SelectOption } from '../styles/ui/Select.styled'
-import { addMusic } from '../../api/musicApi'
-import { toast } from 'react-toastify'
-import { isAxiosError } from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useAppDispatch } from '../../hooks'
-import { getUsersMusicRequest } from '../../redux/users/usersSlice'
+import { useNavigate, useParams } from 'react-router-dom'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Select, SelectOption } from '../styles/ui/Select.styled'
+import { updateMusicRequest } from '../../redux/musics/musicsSlice'
+import { UpdateMusic, updateMusicSchema } from '../../schemas/musicSchema'
+import { CreateMusicContainer, CreateMusicFormGrid } from '../styles/Profile.CreateMusic.styled'
+import { getMusicById } from '../../api/musicApi'
 
-export default function ProfileCreateMusic() {
+export default function EditMusicForm() {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const onSubmit = (values: UpdateMusic) => {
+    dispatch(updateMusicRequest({ _id: id as string, ...values }))
+  }
+
   const {
     register,
     handleSubmit,
-    formState: { errors }
-  } = useForm<CreateMusic>({
-    resolver: zodResolver(createMusicSchema)
+    formState: { errors },
+    reset
+  } = useForm<UpdateMusic>({
+    resolver: zodResolver(updateMusicSchema)
   })
 
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
+  useEffect(() => {
+    setLoading(true)
+    getMusicById(id as string)
+      .then(data => {
+        setLoading(false)
+        if (data) {
+          const { title, artist, album, genre } = data.data
+          reset({ artist, album, genre, title })
+        }
+      })
+      .catch(error => {
+        console.log(`Error getting music: ${error}`)
+        setLoading(false)
+        navigate('/profile')
+      })
+  }, [id, reset, navigate])
 
-  const onSubmit = async (values: CreateMusic) => {
-    try {
-      await addMusic(values)
-      toast.success('Music added successfully')
-      dispatch(getUsersMusicRequest())
-      navigate('/profile')
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const msg = error.response?.data
-        toast.error(msg)
-      } else {
-        toast.error('Something went wrong can you try again.')
-      }
-    }
+  if (loading) {
+    return <div>Loading...</div>
   }
 
   return (
     <CreateMusicContainer>
       <div>
-        <h1>Add Music</h1>
+        <h1>Edit Music</h1>
         <p>Fill in the required fields</p>
       </div>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
@@ -87,13 +98,15 @@ export default function ProfileCreateMusic() {
                 <SelectOption value="Rock">Rock</SelectOption>
                 <SelectOption value="Pop">Pop</SelectOption>
                 <SelectOption value="Hip Hop/Rap">Hip Hop/Rap</SelectOption>
+                <SelectOption value="Ethiopian">Ethiopian</SelectOption>
               </Select>
             </FormControl>
             {errors.genre && <FormMessage>{errors.genre.message}</FormMessage>}
           </FormItem>
+          {errors.root && <FormMessage>{errors.root.message}</FormMessage>}
         </CreateMusicFormGrid>
         <Button bgColor={theme.colors.secondary} color={theme.button.secondary}>
-          Create
+          Submit
         </Button>
       </StyledForm>
     </CreateMusicContainer>

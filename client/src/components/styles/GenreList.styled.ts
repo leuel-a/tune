@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 export const GenreList = styled.ul`
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
   list-style: none;
   padding: 0;

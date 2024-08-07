@@ -62,7 +62,7 @@ export default function HomePage() {
   // this useEffect will make a call to the api on the first render, and
   // all subsequent renders because of the searchParams, and setSearchParams
   useEffect(() => {
-    dispatch(fetchMusicsRequest(`limit=12`))
+    dispatch(fetchMusicsRequest(`limit=8`))
   }, [dispatch])
 
   return (

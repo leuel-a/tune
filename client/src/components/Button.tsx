@@ -6,6 +6,10 @@ interface ButtonProps extends PropsWithChildren<ButtonHTMLAttributes<HTMLButtonE
   bgColor?: string
 }
 
-export default function Button({ children, ...props }: ButtonProps) {
-  return <StyledButton {...props}>{children}</StyledButton>
+export default function Button({ children, color, bgColor, ...props }: ButtonProps) {
+  return (
+    <StyledButton $bgColor={bgColor} $color={color} {...props}>
+      {children}
+    </StyledButton>
+  )
 }

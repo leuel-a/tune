@@ -4,7 +4,7 @@ import { MusicFiltersWrapper } from './styles/MusicFilters.styled'
 import { GenreList, GenreListItem } from './styles/GenreList.styled'
 import { useDebounce } from '../hooks'
 
-const genres = ['Raggae', 'Jazz', 'Rock', 'Pop', 'Hip Hop/Rap', 'Rap']
+const genres = ['Raggae', 'Jazz', 'Rock', 'Pop', 'Hip Hop/Rap', 'Rap', 'Ethiopian']
 
 interface MusicFiltersProps {
   filterMusics: (values: string[]) => void
@@ -36,7 +36,6 @@ function MusicFilters({ filterMusics, searchMusics }: MusicFiltersProps) {
       <Input
         value={search}
         onChange={e => setSearch(e.currentTarget.value)}
-        width={400}
         type="text"
         placeholder="Search musics, artists, albums..."
       />

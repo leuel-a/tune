@@ -1,31 +1,19 @@
-import axios from 'axios'
+import { instance } from '.'
 import Cookies from 'js-cookie'
 import { Music, PaginatedResponse } from '../types'
+import { AxiosResponse } from 'axios'
 
-const BASE_URL = 'http://localhost:5000'
+// get the access token and refresh token from the cookies store
+const accessToken = Cookies.get('accessToken')
+const refreshToken = Cookies.get('refreshToken')
 
-/**
- * Gets musics from the API
- * @params search params for the request
- * @returns the paginated response from the backend api
- */
 export const getMusics = async (searchParams?: string) => {
-  const response = await axios.get<PaginatedResponse<Music>>(
-    `${BASE_URL}/api/musics?${searchParams}`
-  )
+  const response = await instance.get<PaginatedResponse<Music>>(`/api/musics?${searchParams}`)
   return response.data
 }
 
-/**
- * Creates a music from a given music object
- * @param music the music to be added to the database
- * @returns the created music
- */
-export const addMusic = async (music: Music) => {
-  const accessToken = Cookies.get('accessToken')
-  const refreshToken = Cookies.get('refreshToken')
-
-  const response = await axios.post<Music>(`${BASE_URL}/api/musics`, music, {
+export const addMusic = async (music: Partial<Music>) => {
+  const response = await instance.post<Music>('/api/musics', music, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
@@ -34,4 +22,35 @@ export const addMusic = async (music: Music) => {
   })
 
   return response.data
+}
+
+export const getMusicById = async (id: string): Promise<AxiosResponse<Music>> => {
+  const response = await instance.get(`/api/musics/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'x-refresh': refreshToken
+    }
+  })
+
+  return response
+}
+
+export const updateMusic = async (id: string, payload: Partial<Music>) => {
+  const response = await instance.put(`/api/musics/${id}`, payload, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'x-refresh': refreshToken
+    }
+  })
+  return response
+}
+
+export const deleteMusic = async (id: string) => {
+  const response = await instance.delete(`/api/musics/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'x-refresh': refreshToken
+    }
+  })
+  return response
 }
