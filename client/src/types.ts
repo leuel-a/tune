@@ -45,9 +45,10 @@ export type ArtistStats = {
 }
 
 export type AlbumsStats = {
-  _id: string
   count: number
   songs: Music[]
+  artist: string
+  album: string
 }
 
 export type GenreStats = {

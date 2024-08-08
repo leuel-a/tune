@@ -10,7 +10,7 @@ import { getMe, loginUser } from '../../api/authApi'
 import { loginUserSuccess, loginUserFailure, loginUserRequest } from './authSlice'
 import { LoginResponse, User } from '../../types'
 import { LoginType } from '../../schemas/authSchemas'
-import { AxiosError } from 'axios'
+import { AxiosError, isAxiosError } from 'axios'
 
 function* getAuthenticatedUserSaga() {
   try {
@@ -42,7 +42,12 @@ function* loginUserSaga(action: PayloadAction<LoginType>) {
 
     yield put(loginUserSuccess())
   } catch (error) {
-    yield put(loginUserFailure(error))
+    if (isAxiosError(error)) {
+      const errorMessage = error.response?.data
+      yield put(loginUserFailure(errorMessage))
+    } else {
+      yield put(loginUserFailure("Something went wrong please try again."))
+    }
   }
 }
 

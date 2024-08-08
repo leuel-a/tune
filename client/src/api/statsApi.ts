@@ -3,7 +3,7 @@ import { instance } from '.'
 import type { AlbumsStats, ArtistStats, GenreStats, TotalStats } from '../types'
 
 export const getTotalStats = async (): Promise<TotalStats> => {
-  const response = await instance.get(`/api/stats/total`)
+  const response = await instance.get(`/api/stats/totals`)
   return response.data
 }
 

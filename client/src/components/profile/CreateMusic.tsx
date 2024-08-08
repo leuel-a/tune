@@ -87,6 +87,7 @@ export default function ProfileCreateMusic() {
                 <SelectOption value="Rock">Rock</SelectOption>
                 <SelectOption value="Pop">Pop</SelectOption>
                 <SelectOption value="Hip Hop/Rap">Hip Hop/Rap</SelectOption>
+                <SelectOption value="Ethiopian">Ethiopian</SelectOption>
               </Select>
             </FormControl>
             {errors.genre && <FormMessage>{errors.genre.message}</FormMessage>}

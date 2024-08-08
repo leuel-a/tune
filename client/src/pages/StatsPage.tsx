@@ -12,10 +12,10 @@ export default function StatsPage() {
       <Header />
       <Container>
         <StatsPageGrid>
-          <TotalStatsCard />
           <GenreStatsCard />
           <ArtistsStatsCard />
           <AlbumsStatsCard />
+          <TotalStatsCard />
         </StatsPageGrid>
       </Container>
     </>

@@ -13,6 +13,15 @@ export const StatsPageGrid = styled.div`
   }
 `
 
+export const StatsCardHeading = styled.h2`
+  color: ${({theme}) => theme.button.primary};
+  font-weight: 500;
+  font-size: 1.5rem;
+`
+
 export const StatsPageCard = styled.div`
+  padding: 10px 15px;
+  color: ${({theme}) => theme.button.primary};
+  border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.secondary};
 `

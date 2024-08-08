@@ -1,13 +1,15 @@
 import Button from './Button'
 import { theme } from '../main'
 import OAuthButton from './OAuthButton'
+import axios, { AxiosError } from 'axios'
 import { FaGoogle } from 'react-icons/fa'
 import { Flex } from './styles/ui/Flex.styled'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import axios, { AxiosResponse, AxiosError } from 'axios'
 import { registerSchema, RegisterType } from '../schemas/authSchemas'
 import { FormControl, FormItem, FormMessage, StyledForm, StyledInput } from './styles/Form.styled'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignupForm() {
   const {
@@ -19,10 +21,12 @@ export default function SignupForm() {
     resolver: zodResolver(registerSchema)
   })
 
+  const navigate = useNavigate()
   const onSubmit: SubmitHandler<RegisterType> = async data => {
     try {
-      const response: AxiosResponse = await axios.post('http://localhost:5000/api/users', data)
-      console.log(response)
+      await axios.post('http://localhost:5000/api/users', data)
+      toast.success('Successfully registered. You can login now.')
+      navigate('/?limit=8')
     } catch (error) {
       const err = error as AxiosError
       const data = err.response?.data

@@ -8,9 +8,9 @@ import MusicFilters from '../components/MusicFilters'
 import { useAppSelector, useAppDispatch } from '../hooks'
 import { Flex } from '../components/styles/ui/Flex.styled'
 import { Grid } from '../components/styles/ui/Grid.styled'
-import MusicCardSkeleton from '../components/MusicCardSkeleton'
 import { fetchMusicsRequest } from '../redux/musics/musicsSlice'
 import { Container } from '../components/styles/ui/Container.styled'
+import LoadingGridSkeleton from '../components/LoadingGridSkeleton'
 
 export default function HomePage() {
   const dispatch = useAppDispatch()
@@ -71,8 +71,7 @@ export default function HomePage() {
       <Container>
         <MusicFilters filterMusics={filterMusics} searchMusics={searchMusics} />
         <Grid gap={20} columns={4}>
-          {loading &&
-            Array.from({ length: 12 }).map((_, index) => <MusicCardSkeleton key={index} />)}
+          {loading && <LoadingGridSkeleton />}
           {data && data.data.map(music => <Card key={music._id} music={music} />)}
         </Grid>
         <Flex justify="flex-end">
