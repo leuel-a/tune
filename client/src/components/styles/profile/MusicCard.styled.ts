@@ -12,9 +12,14 @@ export const MusicCardListItem = styled.div`
 
 export const MusicCardActions = styled.div`
   display: flex;
-  width: auto;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   gap: 10px;
+
+  * {
+    cursor: pointer;
+  }
 `
 export const MusicCardTitle = styled.h2`
   font-size: 1.2rem;
@@ -24,4 +29,3 @@ export const MusicCardTitle = styled.h2`
 export const MusicCardArtist = styled.p`
   font-size: 0.9rem;
 `
-

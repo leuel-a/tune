@@ -39,9 +39,9 @@ export type TotalStats = {
 }
 
 export type ArtistStats = {
-  _id: string
-  count: number
-  songs: Music[]
+  artist: string
+  albumCount: number
+  totalSongs: number
 }
 
 export type AlbumsStats = {

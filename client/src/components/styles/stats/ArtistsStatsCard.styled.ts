@@ -8,8 +8,8 @@ export const TableContainer = styled.div`
 `
 
 export const Table = styled.table`
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 
   th,
   td {
@@ -17,16 +17,15 @@ export const Table = styled.table`
   }
 
   th {
-    text-align: start;
+    text-align: center;
   }
 
-  tr th:last-child,
-  tr td:last-child {
+  td {
     text-align: center;
   }
 
   tr:nth-of-type(2n) {
-    background-color: hsl(206 19% 41% / .2);
+    background-color: hsl(206 19% 41% / 0.2);
     /* background-color: ${({ theme }) => theme.colors.secondary}; */
     /* background: hsl(206 55% 11% / 1);  */
   }

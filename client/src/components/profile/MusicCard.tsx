@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom'
-import { theme } from '../../main'
 import { Music } from '../../types'
-import Button from '../Button'
 import {
   MusicCardActions,
   MusicCardArtist,
   MusicCardListItem,
   MusicCardTitle
 } from '../styles/profile/MusicCard.styled'
+import { FaRegEdit } from 'react-icons/fa'
+import { MdOutlineDelete } from 'react-icons/md'
 
 interface MusicCardProps {
   onDelete: () => void
@@ -25,12 +25,8 @@ export default function MusicCard({ music, onDelete }: MusicCardProps) {
         <MusicCardArtist>{music.artist}</MusicCardArtist>
       </div>
       <MusicCardActions>
-        <Button onClick={() => onEditClick(music._id)} bgColor={theme.colors.secondary}>
-          Edit
-        </Button>
-        <Button onClick={onDelete} bgColor="red">
-          Delete
-        </Button>
+        <FaRegEdit onClick={() => onEditClick(music._id)} size={18} />
+        <MdOutlineDelete size={24} onClick={onDelete} />
       </MusicCardActions>
     </MusicCardListItem>
   )

@@ -5,17 +5,17 @@ export interface StyledFormProps {
 }
 
 export const StyledForm = styled.form<StyledFormProps>`
-  width: ${({ width }) => width || '100%'};
-  margin: 0 auto;
+  width: 100%;
+  /* width: ${({ width }) => width || '100%'}; */
 
-  @media (max-width: ${({ theme }) => theme.mobile.sm}) {
+  /* @media (max-width: ${({ theme }) => theme.mobile.sm}) {
     padding-inline: 20px;
-    width: 100%; /* Adjust width for mobile devices */
+    width: 100%;
   }
 
   @media (max-width: ${({ theme }) => theme.mobile.md}) {
     width: 90%;
-  }
+  } */
 `
 
 export interface StyledInputProps {

@@ -1,14 +1,13 @@
 import { useEffect } from 'react'
-import { useAppSelector, useAppDispatch } from '../hooks'
 import { toast } from 'react-toastify'
-import { useNavigate, Outlet } from 'react-router-dom'
 import Header from '../components/Header'
-import { ProfilePageContainer } from '../components/styles/ProfilePage.styled'
+import { useNavigate, Outlet } from 'react-router-dom'
+import { useAppSelector, useAppDispatch } from '../hooks'
 import ProfileSideBar from '../components/profile/SideBar'
-import { Container } from '../components/styles/ui/Container.styled'
-import { Flex } from '../components/styles/ui/Flex.styled'
-import { OutletContainer } from '../components/styles/ProfileSideBar.styled'
 import { getAuthenticatedUser } from '../redux/auth/authSlice'
+import { Container } from '../components/styles/ui/Container.styled'
+import { OutletContainer } from '../components/styles/ProfileSideBar.styled'
+import { ProfilePageContainer } from '../components/styles/ProfilePage.styled'
 
 export default function ProfilePage() {
   const navigate = useNavigate()
@@ -28,16 +27,14 @@ export default function ProfilePage() {
   return (
     <>
       <Header />
-      <ProfilePageContainer>
-        <Container>
-          <Flex align="flex-start">
-            <ProfileSideBar />
-            <OutletContainer>
-              <Outlet />
-            </OutletContainer>
-          </Flex>
-        </Container>
-      </ProfilePageContainer>
+      <Container>
+        <ProfilePageContainer>
+          <ProfileSideBar />
+          <OutletContainer>
+            <Outlet />
+          </OutletContainer>
+        </ProfilePageContainer>
+      </Container>
     </>
   )
 }

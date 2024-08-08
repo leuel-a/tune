@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 export const CreateMusicContainer = styled.div`
-  padding: 0px 40px;
-
   h1 {
     color: ${({ theme }) => theme.button.secondary};
     font-size: 1.5rem;
@@ -20,6 +18,11 @@ export const CreateMusicContainer = styled.div`
 export const CreateMusicFormGrid = styled.div`
   display: grid;
   gap: 15px;
+  width: 100%;
   margin-bottom: 20px;
   grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: ${({theme}) => theme.mobile.md}) {
+    grid-template-columns: 100%;
+  }
 `

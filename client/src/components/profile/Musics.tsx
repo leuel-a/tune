@@ -53,6 +53,8 @@ export default function ProfileMusics() {
     dispatch(getUsersMusicRequest(`limit=10`))
   }, [dispatch])
 
+  console.log(data)
+
   return (
     <ProfileMusicsContainer>
       <div>

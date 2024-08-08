@@ -6,7 +6,10 @@ export default function ProfileSideBar() {
 
   return (
     <SideBarContainer>
-      <StyledLink to="/profile" $active={pathname === '/profile'}>
+      <StyledLink
+        to="/profile"
+        $active={pathname === '/profile' || pathname.startsWith('/profile/musics')}
+      >
         My Musics
       </StyledLink>
       <StyledLink to="/profile/create" $active={pathname === '/profile/create'}>

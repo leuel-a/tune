@@ -1,12 +1,11 @@
 import { Container } from './styles/ui/Container.styled'
-import { StyledFooter } from './styles/Footer.styled'
-import { Flex } from './styles/ui/Flex.styled'
+import { FooterLinks, StyledFooter } from './styles/Footer.styled'
 
 export default function Footer() {
   return (
     <StyledFooter>
       <Container>
-        <Flex>
+        <FooterLinks>
           <ul>
             <li>
               Tune is a web application designed for music enthusiasts to easily upload and share
@@ -14,6 +13,7 @@ export default function Footer() {
             </li>
             <li>tune@gmail.com</li>
           </ul>
+
           <ul>
             <li>About Us</li>
             <li>What We Do</li>
@@ -25,8 +25,8 @@ export default function Footer() {
             <li>Blog</li>
             <li>Contact Us</li>
           </ul>
-        </Flex>
 
+        </FooterLinks>
         <p>&copy; 2024 Tune. All rights reserved.</p>
       </Container>
     </StyledFooter>

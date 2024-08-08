@@ -5,12 +5,16 @@ export const SideBarContainer = styled.div`
   flex: 1;
   gap: 15px;
   display: flex;
-  padding-inline: 10px;
-  flex-direction: column;
+  flex-direction: row;
+  margin-bottom: 20px;
   align-items: start;
   justify-content: start;
   color: ${({ theme }) => theme.colors.secondary};
-  border-right: 1px solid ${({ theme }) => theme.colors.secondary};
+  /* border-right: 1px solid ${({ theme }) => theme.colors.secondary}; */
+
+  @media (max-width: ${({ theme }) => theme.mobile.sm}) {
+    flex-wrap: wrap;
+  }
 `
 
 export const OutletContainer = styled.div`
@@ -24,7 +28,7 @@ export const StyledLink = styled(Link)<{ $active?: boolean }>`
   color: ${({ theme, $active }) => ($active ? theme.colors.primary : 'inherit')};
   border-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 8px;
-  padding: 15px 10px;
+  padding: 10px 10px;
   text-decoration: none;
 `
 
