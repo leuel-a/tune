@@ -37,21 +37,23 @@ export const getStatsForArtists = async () => {
   return await MusicModel.aggregate([
     {
       $group: {
-        _id: '$artist',
-        count: { $sum: 1 },
-        songs: { $push: '$$ROOT' },
-        albums: { $addToSet: '$album' },
-        genres: { $addToSet: '$genre' }
+        _id: { artist: '$artist', album: '$album' },
+        songCount: { $sum: 1 }
+      }
+    },
+    {
+      $group: {
+        _id: '$_id.artist',
+        albumCount: { $sum: 1 },
+        totalSongs: { $sum: '$songCount' }
       }
     },
     {
       $project: {
-        _id: 1,
+        _id: 0,
         artist: '$_id',
-        songs: 1,
-        count: 1,
-        albumCount: { $size: '$albums' },
-        genreCount: { $size: '$genres' }
+        albumCount: 1,
+        totalSongs: 1
       }
     }
   ])
