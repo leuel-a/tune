@@ -12,9 +12,6 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
   const accessToken = _.get(req, 'headers.authorization', '').replace(/^Bearer\s/, '')
   const refreshToken = _.get(req, 'headers.x-refresh')
 
-  logger.info(`Access Token: ${accessToken}`)
-  logger.info(`Refresh Token: ${refreshToken}`)
-
   if (!accessToken) {
     return next()
   }

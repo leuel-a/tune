@@ -23,7 +23,7 @@ export const createUserHandler = async (
     // set the location header for the resource location
     res.location(`/api/users/${user.id}`)
 
-    return res.status(201).send(_.omit(user, ['password']))
+    return res.status(201).send(_.omit(user.toJSON(), ['password']))
   } catch (error: any) {
     return res.status(400).send(error.message)
   }

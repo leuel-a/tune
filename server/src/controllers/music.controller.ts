@@ -89,7 +89,7 @@ export const deleteMusicHandler = async (
   if (!isValidObjectId(id)) {
     return res.status(400).send('Id not a valid mongoose.Types.ObjectId')
   }
-  
+
   const user = req.user as UserDocument
   const music = await findMusic({ _id: id })
 

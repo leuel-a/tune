@@ -5,7 +5,6 @@ export const requireUser = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("requireUser middleware")
   if (req.isAuthenticated()) {
     return next()
   }

@@ -1,5 +1,6 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from 'mongoose'
 import MusicModel, { MusicInput, MusicDocument } from '../models/music.model'
+import { logger } from '../utils/logger.utils'
 
 export const createMusic = async (input: MusicInput) => {
   return await MusicModel.create(input)
@@ -11,13 +12,9 @@ export const findMusic = async (
 ) => {
   try {
     const result = await MusicModel.findOne(query, {}, options)
-
-    if (!result) {
-      console.log(`No document found with the given query: ${JSON.stringify(query)}`)
-    }
     return result
   } catch (error) {
-    console.error(`Error finding document: ${error}`)
+    logger.error(`Error finding document: ${error}`)
     throw error
   }
 }

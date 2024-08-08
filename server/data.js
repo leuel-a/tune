@@ -115,7 +115,8 @@ async function main() {
     try {
       const response = await axios.post('http://localhost:5000/api/musics', music, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`,
+          'x-refresh': refreshToken
         }
       })
       console.log(response.data)
