@@ -12,8 +12,8 @@ RUN npm install
 # copy the rest of the files
 COPY . .
 
-# export the port 5000
-EXPOSE 5000 
+# export the port 80
+EXPOSE 80 
 
 # run the application
 CMD ["npm", "start"]
