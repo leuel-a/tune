@@ -2,6 +2,12 @@
 
 **Tune** is a simple, fully responsive, and functional web application built with modern web technologies. It provides basic CRUD functionality for managing music records and features the ability to filter music by genre, and search by artist, album, and title.
 
+## Screenshots
+
+[!First Screen](./client/screenshots/photo1.jpg)
+[!Second Screen](./client/screenshots/photo2.jpg)
+[!Third Screen](./client/screenshots/photo3.jpg)
+
 ## Technologies
 
 ### Frontend
