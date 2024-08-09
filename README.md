@@ -4,9 +4,9 @@
 
 ## Screenshots
 
-[!First Screen](./client/screenshots/photo1.jpg)
-[!Second Screen](./client/screenshots/photo2.jpg)
-[!Third Screen](./client/screenshots/photo3.jpg)
+![First Screen](./client/screenshots/photo1.jpg)
+![Second Screen](./client/screenshots/photo2.jpg)
+![Third Screen](./client/screenshots/photo3.jpg)
 
 ## Technologies
 
